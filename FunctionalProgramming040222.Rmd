@@ -1,0 +1,51 @@
+---
+title: "Functional Programming - Back to Basics"
+author: "Eryn McFarlane"
+date: "09/02/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Why do we do Functional Programming
+
+The whole point is to 1) make your life easier because you don't need to manually re-do the same processes you've already done and 2) cut down on error by copy and pasting. 
+
+General rule: if you're going to do something more than twice, it's worth figuring out a smarter way to do it. 
+
+For example, you might want to do multiple plots, which differ only in their input (e.g. graphing the same x and y for different years). You might want to process data from different files in the same way etc. 
+
+If you write a function or a loop, then you will only need to change code in one place, if you need to change it, as compared to finding all of the places you might have implemented it (again, increasing the likelihood of errors). 
+
+
+```{r}
+### make up some data
+df<-data.frame(cbind(rnorm(100, 0, 1), rnorm(100, 5, 3)))
+```
+
+Let's write a (very simple) function:
+
+```{r}
+function1<-function(x,y){
+  #do something with x and y
+  x+y
+}
+
+function1(df[,1], df[,2])
+
+df[,1]+df[,2]
+```
+
+Obviously this is a really simple function. I've just told the function that I was going to give it two arguments, and that I wanted it to add them together. 
+
+Now, we don't need to only use this on the made up data, we can use it on any two arguments
+
+```{r}
+
+function1(1, 100)
+```
+
+We can make this function as simple or as difficult as we like. If it's something that is going to be used accross multiple projects, it's worth saving it separately so that it can be called using source(). 
+

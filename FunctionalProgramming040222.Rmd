@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Why do we do Functional Programming
+(this is very loosely based off https://ourcodingclub.github.io/tutorials/funandloops/, among others)
 
 The whole point is to 1) make your life easier because you don't need to manually re-do the same processes you've already done and 2) cut down on error by copy and pasting. 
 
@@ -35,7 +36,7 @@ function1<-function(x,y){
 
 function1(df[,1], df[,2])
 
-df[,1]+df[,2]
+head(df[,1]+df[,2])
 ```
 
 Obviously this is a really simple function. I've just told the function that I was going to give it two arguments, and that I wanted it to add them together. 
@@ -58,7 +59,7 @@ function2<-function(one, two, red, blue){
 
 function2(1, 2, 3, 4)
 ```
-
+## For Loops
 Let's look a little bit at loops. 
 
 In R, there are for loops and while loops. I've never used a while loop, so for loops. 
@@ -103,7 +104,9 @@ for(j in 1:ncol(df)){
 head(df_std)
 ```
 
-So you can see that you can put loops inside loops inside loops. This is not always efficient, and it's easy to lose some things. This is where the amazing 'apply' group of functions comes in.
+So you can see that you can put loops inside loops inside loops. This is not always efficient, and it's easy to lose some things. Additionally, the way that loops are saved can slow them down a lot, which can be annoying if there's a lot of data, or many iterations. 
+
+This is where the amazing 'apply' group of functions comes in.
 
 
 For example, we can write a function, and run it on df using lappy. 
@@ -116,16 +119,45 @@ function3<-function(x){
 }
 
 lapply(df[,c(1:2)], function3)
-sapply(df[,c(1:2)], function3)
+head(sapply(df[,c(1:2)], function3), 10)
 tapply(df[,1], df[,3], function3)
 
+```
+The first argument of lapply() gives the list object to be iterated, and the second object is the function. 
+sapply() simplfies lapply() to get the output into a vector.
+tapply() allows you to run an apply with a different condition. 
+
+Additionally, you can build apply functions into other things. 
+
+```{r}
+df[,4]<-rep(c(1:50), 2) ### this can be the unique identifier
+df[,5]<-sample(rep(c("one", "two", "red", "blue"), 25))
+with(df, tapply(df[,4], list(df[,5], df[,3]), function(x) length(unique(x))))
 ```
 
 Finally, while I've written function3, it already exists! This is what scale() does. Sometimes cool to reinvent the wheel, sometimes not needed. 
 
 ```{r}
-scale(df[,1])
-scale(df[,2])
+head(scale(df[,1]))
+head(scale(df[,2]))
 ```
 
-Of course this is all do-able in tidyverse as well. The tidyverse syntax is: 
+Of course this is all do-able in tidyverse as well. I've not gone into it here, but I think it's the map group of functions (I only use tidyverse when absolutely necessary)
+
+
+## Conditional Statements
+
+For example, an ifelse() statement. Based on a condition, do this, or do this. These can be really simple, or can get really complicated, and can also be nested.
+Of course, this could then be put into a for loop, or into an apply. 
+
+```{r}
+newvariable<-ifelse(df[,5]=='blue', df[,1]+6, df[,1])
+
+nested_conditional<-ifelse(df[,5]=='blue', df[,1]*4, 
+                           ifelse(df[,5]=="red", df[,1]/5, 
+                           ifelse(df[,5]=="one", df[,1]+7, 
+                           df[,1])))
+
+head(nested_conditional)
+
+```

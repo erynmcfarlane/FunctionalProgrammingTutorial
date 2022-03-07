@@ -1,5 +1,5 @@
 ---
-title: "Functional Programming - Back to Basics"
+title: "Dys-Functional Programming - Back to Basics"
 author: "Eryn McFarlane"
 date: "09/02/2022"
 output: html_document
@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Why do we do Functional Programming
+## Why do we do dys-Functional Programming
 (this is very loosely based off https://ourcodingclub.github.io/tutorials/funandloops/, among others)
 
 The whole point is to 1) make your life easier because you don't need to manually re-do the same processes you've already done and 2) cut down on error by copy and pasting. 
